@@ -10,8 +10,65 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 0) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_24_170429) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "cards", force: :cascade do |t|
+    t.string "front_text"
+    t.string "back_text"
+    t.bigint "deck_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deck_id"], name: "index_cards_on_deck_id"
+  end
+
+  create_table "decks", force: :cascade do |t|
+    t.string "title"
+    t.string "source_language"
+    t.string "target_language"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_decks_on_user_id"
+  end
+
+  create_table "user_cards", force: :cascade do |t|
+    t.boolean "status"
+    t.bigint "card_id", null: false
+    t.bigint "user_deck_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_user_cards_on_card_id"
+    t.index ["user_deck_id"], name: "index_user_cards_on_user_deck_id"
+  end
+
+  create_table "user_decks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "deck_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deck_id"], name: "index_user_decks_on_deck_id"
+    t.index ["user_id"], name: "index_user_decks_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  add_foreign_key "cards", "decks"
+  add_foreign_key "decks", "users"
+  add_foreign_key "user_cards", "cards"
+  add_foreign_key "user_cards", "user_decks"
+  add_foreign_key "user_decks", "decks"
+  add_foreign_key "user_decks", "users"
 end
