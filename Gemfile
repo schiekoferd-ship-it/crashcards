@@ -52,6 +52,8 @@ gem "sassc-rails"
 
 gem 'devise'
 
+gem "ruby_llm", "~> 1.2.0"
+
 # Omniauth - Signin via Google, Facebook...
 gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
