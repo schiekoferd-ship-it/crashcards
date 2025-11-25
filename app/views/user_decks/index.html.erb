@@ -1,0 +1,83 @@
+<div class="navbar navbar-light bg-success">
+  <div class="container-fluid">
+    <h4 class="pt-3"><strong>CrashCards</strong></h4>
+    <a class="nav-link" href=" <%= user_decks_path %> ">
+      <i class="fa-regular fa-house fs-5"></i>
+    </a>
+  </div>
+</div>
+
+
+<%# Funktions %>
+
+<div class="d-flex align-items-center gap-3 px-3 top-bar">
+  <div class="align-items-center">
+    <a href="" class="btn btn-success rounded-5"> <%# new_deck_path %>
+      <i class="fa-regular fa-circle-plus fs-3 p-1 py-2"></i>
+    </a>
+  </div>
+
+  <div class="flex-grow-1 my-4 mx-3 rounded-5 search-form">
+    <%= simple_form_for :search, url: user_decks_path, method: :get do |f| %>
+      <div class="search-form-control form-group">
+        <input class="form-control string required bg-light" type="text" name="search[query]" id="search_query" />
+        <button name="button" type="submit" class="btn btn-flat">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="px-3 mb-4">
+  <%= link_to decks_path,
+      class: "btn d-flex align-items-center w-100 px-4 py-3 rounded-pill bg-light border-0 shadow-sm text-dark" do %>
+
+    <span class="d-flex align-items-center justify-content-center border rounded-circle me-3"
+          style="width: 32px; height: 32px; border-width: 2px;">
+      &larr;
+    </span>
+
+    <span class="fw-normal">
+      <strong>Browse other decks</strong>
+    </span>
+
+  <% end %>
+</div>
+
+
+<%# List of user decks %>
+
+<ul>
+  <% @user_decks.each do |user_deck| %>
+    <li>
+      <%= link_to user_card_path(user_deck) do %>
+        <div class="container-fluid">
+          <div class="card-product d-flex justify-content-between rounded-5 mb-3">
+            <div class="card-product-infos">
+              <h2><%= user_deck.deck.title %></h2>
+              <p><%= user_deck.deck.source_language %> -> <%= user_deck.deck.target_language %></p>
+            </div>
+            <div class="bg-light">
+              <img src="" class="p-2"/>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<%# this is a test user deck: %>
+
+<div class="container-fluid">
+  <div class="card-product d-flex justify-content-between rounded-5 mb-3">
+    <div class="card-product-infos">
+      <h2>Name of deck 1</h2>
+      <p>This deck is for ...</p>
+    </div>
+    <div class="bg-light">
+      <img src="https://image.similarpng.com/file/similarpng/original-picture/2020/08/Sixty-percent-blue-grey-and-white-pie-chart-on-transparent-background-PNG.png" class="p-2"/>
+    </div>
+  </div>
+</div>
