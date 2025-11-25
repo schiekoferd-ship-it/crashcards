@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   resources :decks, only: [:index, :show, :new, :create] do
     resources :messages, only: [:new, :create]
-    resources :cards, only: [:index]
+    resources :cards, only: [:create]
   end
 
   resources :user_decks, only: [:index, :show, :create, :destroy] do
