@@ -4,7 +4,7 @@
 # end
 
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!, :raise => false
 
   def google_oauth2
     user = User.from_omniauth(auth)
