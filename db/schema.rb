@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_24_170429) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_25_112223) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,7 +30,18 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_24_170429) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "system_prompt"
+    t.string "occasion"
     t.index ["user_id"], name: "index_decks_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.string "role"
+    t.string "content"
+    t.bigint "deck_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deck_id"], name: "index_messages_on_deck_id"
   end
 
   create_table "user_cards", force: :cascade do |t|
@@ -67,6 +78,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_24_170429) do
 
   add_foreign_key "cards", "decks"
   add_foreign_key "decks", "users"
+  add_foreign_key "messages", "decks"
   add_foreign_key "user_cards", "cards"
   add_foreign_key "user_cards", "user_decks"
   add_foreign_key "user_decks", "decks"
