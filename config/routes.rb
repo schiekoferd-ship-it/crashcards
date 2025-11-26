@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'decks/index'
+  get 'decks/show'
   # edit devise_for :users for Google/Facebook... Login necessary
   devise_for :user,
       controllers: {
