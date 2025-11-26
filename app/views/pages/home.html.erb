@@ -1,2 +1,38 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="container py-5">
+  <div class="bg-success text-black py-5 mb-4 text-center">
+  <h1 class="display-5 fw-bold">CrashCards</h1>
+  <p class="lead mb-0">Rapid scenario-based language learning</p>
+</div>
+
+
+  <div class="row justify-content-center mb-5">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="h4 text-center mb-4">How it works</h2>
+
+          <ol class="list-group list-group-numbered">
+            <li class="list-group-item">Choose your occasion.</li>
+            <li class="list-group-item">Select the language you want to speak in.</li>
+            <li class="list-group-item">CrashCards instantly creates a deck with essential words and phrases.</li>
+            <li class="list-group-item">Learn, repeat, and track your personal progress.</li>
+            <li class="list-group-item">Speak fluently with ease of mind! ❤️ </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <% if user_signed_in? %>
+      <%= link_to "Go to My Decks", decks_path, class: "btn btn-primary btn-lg px-4" %>
+    <% else %>
+      <%= link_to "Log In", new_user_session_path, class: "btn btn-primary btn-lg px-4" %>
+      <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-outline-primary btn-lg px-4 ms-2" %>
+    <% end %>
+  </div>
+
+  <div class="text-center text-muted mt-4">
+    <small>CrashCards is evolving — more features coming soon.</small>
+  </div>
+</div>

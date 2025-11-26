@@ -1,0 +1,10 @@
+<p>Find me in app/views/decks/index.html.erb</p>
+
+<h1>CrashCard decks from other users</h1>
+
+<% @decks.each do |deck| %>
+  <div class="deck-card">
+    <h2><%= link_to deck.title, deck_path(deck) %></h2>
+    <p><%= deck.target_language %></p>
+  </div>
+<% end %>
