@@ -1,23 +1,7 @@
-<div class="navbar navbar-light bg-success">
-  <div class="container-fluid">
-    <h4 class="pt-3"><strong>CrashCards</strong></h4>
-    <a class="nav-link" href=" <%= user_decks_path %> ">
-      <i class="fa-regular fa-house fs-5"></i>
-    </a>
-  </div>
-</div>
-
-
 <%# Funktions %>
 
 <div class="d-flex align-items-center gap-3 px-3 top-bar">
-  <div class="align-items-center">
-    <a href="" class="btn btn-success rounded-5"> <%# new_deck_path %>
-      <i class="fa-regular fa-circle-plus fs-3 p-1 py-2"></i>
-    </a>
-  </div>
-
-  <div class="flex-grow-1 my-4 mx-3 rounded-5 search-form">
+  <div class="flex-grow-1 my-2 rounded-5 search-form">
     <%= simple_form_for :search, url: user_decks_path, method: :get do |f| %>
       <div class="search-form-control form-group">
         <input class="form-control string required bg-light" type="text" name="search[query]" id="search_query" />
@@ -26,6 +10,12 @@
         </button>
       </div>
     <% end %>
+  </div>
+
+  <div class="align-items-center">
+    <a href="<%# new_deck_path %>" class="btn btn-success rounded-5">
+      <i class="fa-regular fa-circle-plus fs-3 p-1 py-2"></i>
+    </a>
   </div>
 </div>
 
