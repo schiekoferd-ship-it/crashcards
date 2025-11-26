@@ -1,0 +1,21 @@
+<h1>My Decks</h1>
+
+<% if @user_decks.any? %>
+  <% @user_decks.each do |user_deck| %>
+    <div style="border: 1px solid #ccc; padding: 16px; margin: 16px 0;">
+      <h2><%= user_deck.deck.title %></h2>
+      <p><%= user_deck.deck.description %></p>
+      <p>Cards: <%= user_deck.deck.cards.count %></p>
+
+      <%= link_to "View Details", user_deck_path(user_deck) %>
+
+      <% if user_deck.deck.cards.any? %>
+        <%= link_to "Practice",
+                    user_deck_user_card_path(user_deck, user_deck.user_cards.first, side: "front"),
+                    style: "margin-left: 10px;" %>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <p>No decks available. Add some decks first!</p>
+<% end %>

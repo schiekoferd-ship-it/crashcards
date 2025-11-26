@@ -1,0 +1,89 @@
+<%# app/views/user_cards/show.html.erb %>
+
+<div class="practice-page">
+
+  <!-- Header bar -->
+  <header class="practice-header">
+    <div class="practice-title">Practice</div>
+    <div class="practice-home">
+      <%= link_to root_path do %>
+        🏠
+      <% end %>
+    </div>
+  </header>
+
+  <!-- Progress -->
+  <div class="practice-progress">
+    <div class="progress-bar-wrapper">
+      <div class="progress-bar-track">
+        <% if @total_cards.to_i > 0 %>
+          <% width = (@current_position.to_f / @total_cards * 100).round %>
+        <% else %>
+          <% width = 0 %>
+        <% end %>
+        <div class="progress-bar-fill" style="width: <%= width %>%"></div>
+      </div>
+      <div class="progress-counter">
+        <%= @current_position %>/<%= @total_cards %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Language label -->
+  <div class="practice-language">
+    <% if @side == "front" %>
+        <%= @deck.source_language %>
+    <% else %>
+        <%= @deck.target_language %>
+    <% end %>
+  </div>
+
+  <!-- Card -->
+  <div class="practice-card-wrapper">
+    <div class="practice-card">
+      <div class="practice-word">
+        <% if @side == "front" %>
+          <%= @card.front_text.upcase %>
+        <% else %>
+          <%= @card.back_text %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="practice-actions">
+    <% if @side == "front" %>
+      <!-- FRONT SIDE: show Flip button -->
+      <%= link_to "Flip card",
+                  user_deck_user_card_path(@user_deck, @user_card, side: "back"),
+                  class: "btn-flip" %>
+    <% else %>
+      <!-- BACK SIDE: Wrong / Correct buttons -->
+      <%= button_to "Wrong (still learning)",
+                    user_deck_user_card_path(@user_deck, @user_card, side: "front", answer: "wrong"),
+                    method: :patch,
+                    class: "btn-wrong" %>
+
+      <%= button_to "Correct (I know this)",
+                    user_deck_user_card_path(@user_deck, @user_card, side: "front", answer: "correct"),
+                    method: :patch,
+                    class: "btn-correct" %>
+    <% end %>
+  </div>
+
+  <!-- Next / Previous navigation -->
+  <div class="practice-nav">
+    <% if @previous_user_card %>
+      <%= link_to "Previous",
+                  user_deck_user_card_path(@user_deck, @previous_user_card, side: "front"),
+                  class: "nav-link" %>
+    <% end %>
+
+    <% if @next_user_card %>
+      <%= link_to "Next",
+                  user_deck_user_card_path(@user_deck, @next_user_card, side: "front"),
+                  class: "nav-link" %>
+    <% end %>
+  </div>
+</div>
