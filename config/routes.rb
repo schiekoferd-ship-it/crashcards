@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'decks/index'
+  get 'decks/show'
   # edit devise_for :users for Google/Facebook... Login necessary
   devise_for :user,
       controllers: {
@@ -7,7 +9,7 @@ Rails.application.routes.draw do
 
   root to: "pages#home"
 
-  resources :decks, only: [:index, :show, :new, :create] do
+  resources :decks, only: [:index, :show, :new, :create, :edit, :update] do
     resources :messages, only: [:new, :create]
     resources :cards, only: [:create]
   end

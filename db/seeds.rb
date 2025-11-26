@@ -1,59 +1,70 @@
-# db/seeds.rb
+# This file should ensure the existence of records required to run the application in every environment (production,
+# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
+# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
+#
+# Example:
+#
+#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
+#     MovieGenre.find_or_create_by!(name: genre_name)
+#   end
 
-puts "🗑️  Limpiando base de datos..."
-UserCard.destroy_all
-Card.destroy_all
-UserDeck.destroy_all
 Deck.destroy_all
-User.destroy_all
-puts "✅ Base de datos limpia!"
+Card.destroy_all
 
-# 1. CREAR USUARIO
-puts "\n👤 Creando usuario..."
-user = User.create!(
-  email: "test@test.com",
-  password: "123456",
-  password_confirmation: "123456",
-  name: "Test User"
+# 1. Childcare example
+deck1 = Deck.create!(
+  title: "Childcare Basics",
+  source_language: "German",
+  target_language: "English"
 )
-puts "✓ Usuario creado: #{user.email}"
 
-# 2. CREAR MAZO
-puts "\n📦 Creando mazo..."
-deck = Deck.create!(
-  title: "German Basics",
+Card.create!(deck: deck1, front: "diaper", back: "Windel")
+Card.create!(deck: deck1, front: "story time", back: "Vorlesezeit")
+Card.create!(deck: deck1, front: "snack time", back: "Snack-Pause")
+
+# 2. Finance meeting example
+deck2 = Deck.create!(
+  title: "Finance & Balance Sheet Vocabulary",
+  source_language: "German",
+  target_language: "English"
 )
-puts "✓ Mazo creado: #{deck.title}"
 
-# 3. CREAR TARJETAS
-puts "\n🎴 Creando tarjetas..."
-card1 = Card.create!(deck: deck, front_text: "Hund", back_text: "Dog")
-card2 = Card.create!(deck: deck, front_text: "Katze", back_text: "Cat")
-card3 = Card.create!(deck: deck, front_text: "Haus", back_text: "House")
-puts "✓ 3 tarjetas creadas"
+Card.create!(deck: deck2, front: "revenue", back: "Umsatz")
+Card.create!(deck: deck2, front: "gross margin", back: "Bruttomarge")
+Card.create!(deck: deck2, front: "operating expenses", back: "Betriebskosten")
+Card.create!(deck: deck2, front: "cash flow forecast", back: "Cashflow-Prognose")
 
-# 4. CONECTAR USUARIO CON MAZO (⭐ CLAVE)
-puts "\n🔗 Conectando usuario con mazo..."
-user_deck = UserDeck.create!(
-  user: user,
-  deck: deck
+# 3. Medical appointment
+deck3 = Deck.create!(
+  title: "Doctor Appointment",
+  source_language: "German",
+  target_language: "English"
 )
-puts "✓ UserDeck creado: ID #{user_deck.id}"
 
-# 5. CREAR PROGRESO (UserCards)
-puts "\n📊 Creando progreso de tarjetas..."
-UserCard.create!(card: card1, user_deck: user_deck, status: false)
-UserCard.create!(card: card2, user_deck: user_deck, status: false)
-UserCard.create!(card: card3, user_deck: user_deck, status: false)
-puts "✓ Progreso creado para 3 tarjetas"
+Card.create!(deck: deck3, front: "temperature", back: "Temperatur")
+Card.create!(deck: deck3, front: "stomach ache", back: "Bauchschmerzen")
+Card.create!(deck: deck3, front: "prescription", back: "Rezept")
 
-puts "\n" + "="*50
-puts "🎉 SEED COMPLETADO!"
-puts "="*50
-puts "Usuarios: #{User.count}"
-puts "Mazos: #{Deck.count}"
-puts "Tarjetas: #{Card.count}"
-puts "UserDecks: #{UserDeck.count}"
-puts "UserCards: #{UserCard.count}"
-puts "\n🔑 Login: test@test.com / 123456"
-puts "="*50
+# 4. Travel emergencies
+deck4 = Deck.create!(
+  title: "Travel Emergency Phrases",
+  source_language: "German",
+  target_language: "English"
+)
+
+Card.create!(deck: deck4, front: "lost passport", back: "Pass verloren")
+Card.create!(deck: deck4, front: "police station", back: "Polizeiwache")
+Card.create!(deck: deck4, front: "insurance claim", back: "Versicherungsfall")
+
+# 5. Restaurant phrases
+deck5 = Deck.create!(
+  title: "Restaurant Survival",
+  source_language: "German",
+  target_language: "English"
+)
+
+Card.create!(deck: deck5, front: "still water", back: "Wasser ohne Kohlensäure")
+Card.create!(deck: deck5, front: "bill/check", back: "Rechnung")
+Card.create!(deck: deck5, front: "allergies", back: "Allergien")
+user = User.create!(email: "bob@gmail.com", password: "Password123")
+puts "Created a user"

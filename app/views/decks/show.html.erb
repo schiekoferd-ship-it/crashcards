@@ -1,0 +1,13 @@
+<p>Find me in app/views/decks/show.html.erb</p>
+
+<h1><%= @deck.title %></h1>
+<p><%= deck.target_language %></p>
+
+<h3>Cards</h3>
+
+<% @cards.each do |card| %>
+  <div class="card-item">
+    <strong><%= card.front %></strong><br>
+    <em><%= card.back %></em>
+  </div>
+<% end %>

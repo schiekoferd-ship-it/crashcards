@@ -3,4 +3,7 @@ class Deck < ApplicationRecord
   has_many :cards, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :user_decks, dependent: :destroy
+
+  validates :occasion, presence: true
+  validates :target_language, presence: true
 end
