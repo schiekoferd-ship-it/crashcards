@@ -8,7 +8,6 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-<<<<<<< HEAD
 Deck.destroy_all
 Card.destroy_all
 
@@ -67,7 +66,5 @@ deck5 = Deck.create!(
 Card.create!(deck: deck5, front: "still water", back: "Wasser ohne Kohlensäure")
 Card.create!(deck: deck5, front: "bill/check", back: "Rechnung")
 Card.create!(deck: deck5, front: "allergies", back: "Allergien")
-=======
 user = User.create!(email: "bob@gmail.com", password: "Password123")
 puts "Created a user"
->>>>>>> master
