@@ -2,16 +2,6 @@ class DecksController < ApplicationController
 
   # OPEN_AI_LANGUAGES = ["🇦🇱 Albanian","🇪🇹 Amharic","🇸🇦 Arabic","🇦🇲 Armenian","🇧🇩 Bengali","🇧🇦 Bosnian","🇧🇬 Bulgarian","🇲🇲 Burmese","🇦🇩 Catalan","🇨🇳 Chinese","🇭🇷 Croatian","🇨🇿 Czech","🇩🇰 Danish","🇳🇱 Dutch","🇪🇪 Estonian","🇫🇮 Finnish","🇫🇷 French","🇬🇪 Georgian","🇩🇪 German","🇬🇷 Greek","🇮🇳 Gujarati","🇮🇳 Hindi","🇭🇺 Hungarian","🇮🇸 Icelandic","🇮🇩 Indonesian","🇮🇹 Italian","🇯🇵 Japanese","🇮🇳 Kannada","🇰🇿 Kazakh","🇰🇷 Korean","🇱🇻 Latvian","🇱🇹 Lithuanian","🇲🇰 Macedonian","🇲🇾 Malay","🇮🇳 Malayalam","🇮🇳 Marathi","🇲🇳 Mongolian","🇳🇴 Norwegian","🇮🇷 Persian","🇵🇱 Polish","🇵🇹 Portuguese","🇮🇳 Punjabi","🇷🇴 Romanian","🇷🇺 Russian","🇷🇸 Serbian","🇸🇰 Slovak","🇸🇮 Slovenian","🇸🇴 Somali","🇪🇸 Spanish","🇰🇪 Swahili","🇸🇪 Swedish","🇵🇭 Tagalog","🇮🇳 Tamil","🇮🇳 Telugu","🇹🇭 Thai","🇹🇷 Turkish","🇺🇦 Ukrainian","🇵🇰 Urdu","🇻🇳 Vietnamese"]
   OPEN_AI_LANGUAGES_SHORT = ["🇬🇧 English", "🇫🇷 French", "🇩🇪 German", "🇮🇹 Italian", "🇪🇸 Spanish", "🇨🇳 Chinese", "🇮🇳 Hindi", "🇧🇩 Bengali", "🇵🇹 Portuguese", "🇷🇺 Russian", "🇯🇵 Japanese", "🇰🇷 Korean"]
-  SYSTEM_PROMPT = "Your task is to understand the occasion and the target language, identify the 25–50 most important practical words and phrases needed for that occasion, and phrase everything concisely and in real-world language. Only produce content that can be directly turned into flashcards (e.g. words and example sentences). Do not generate grammar explanations, dialogues or any content that cannot be used as a flashcard.
-                  Return exactly this:
-                  flashcards: an array of hashes. Each hash must contain one key-value pair. The key is a verb or phrase in the source_language (front side of the flashcard). The value is the translation of that verb or phrase into the target_language (back side of the flashcard).
-                  Example output format:
-                  flashcards = [
-                  { 'Windel': 'Diaper' },
-                  { 'füttern': 'to feed' },
-                  { 'schlafen': 'to sleep' }
-                  ]
-                  Use plain text only. Do not use formatting. Use UTF-8 characters. Emojis are allowed. Do not output anything else."
 
   def new
     @deck = Deck.new()
@@ -45,7 +35,22 @@ class DecksController < ApplicationController
     if @deck.source_language == "false"
       # here needs to be an error message
     else
-      @deck.system_prompt = "#{SYSTEM_PROMPT}, Source_Language = #{@deck.source_language}, Target_Language = #{@deck.target_language}, Occasion: "
+      system_prompt = "You are an expert of translating words and phrases from #{@deck.source_language} to #{@deck.target_language}.
+                      Your task is it to understand and interpret this situation described by the user: #{@deck.occasion}
+                      Identify the most important practical words and phrases needed for such a situation. Rate your output internally from 1 to 10 regarding the practicality, relevance, everyday usability.
+                      Only produce content that can be directly turned into flashcards (e.g. words and example sentences). Do not generate grammar explanations, dialogues or any content that cannot be used as a flashcard.
+                      Return only the top 50 words/phrases with the highest rating.
+                      Return the results in an array of hashes. Each hash must contain one key-value pair.
+                      The key is a verb or phrase in the #{@deck.source_language} (front side of the flashcard).
+                      The value is the translation of that verb or phrase into #{@deck.target_language} (back side of the flashcard).
+                      Example output format:
+                      [
+                        { 'Windel': 'Diaper' },
+                        { 'füttern': 'to feed' },
+                        { 'schlafen': 'to sleep' }
+                      ]
+                      Use plain text only. Do not use formatting. Use UTF-8 characters. Emojis are allowed. Do not output anything else."
+      @deck.system_prompt = "#{system_prompt}"
       @response = llm_chat.with_instructions(@deck.system_prompt).ask(@deck.occasion)
     end
   end
