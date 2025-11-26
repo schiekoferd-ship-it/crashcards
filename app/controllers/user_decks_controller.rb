@@ -19,7 +19,7 @@ class UserDecksController < ApplicationController
 
   private
 
-  def set_deck
+  def set_user_deck
     @user_deck = UserDeck.find(params[:id])
   end
 end
