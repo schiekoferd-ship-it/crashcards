@@ -10,20 +10,41 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <div class="navbar navbar-light bg-success">
-      <div class="container-fluid">
-        <h4 class="pt-3"><strong>CrashCards</strong></h4>
-        <a class="nav-link" href=" <%= user_decks_path %> ">
-          <i class="fa-regular fa-house fs-5"></i>
-        </a>
-      </div>
+  <body class="d-flex flex-column min-vh-100 bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-light bg-white border-bottom shadow-sm">
+  <div class="container">
+    <!-- Brand -->
+    <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
+      <span class="fs-4 fw-bold text-success">💬 CrashCards</span>
+    <% end %>
+
+    <!-- Mobile toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCrashcards" aria-controls="navbarCrashcards" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Right side -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarCrashcards">
+      <% if user_signed_in? %>
+        <%= link_to "My Decks", user_decks_path, class: "btn btn-success ms-2" %>
+      <% else %>
+        <%= link_to "Log in", new_user_session_path, class: "btn btn-outline-success me-2" %>
+        <%= link_to "Sign up", new_user_registration_path, class: "btn btn-success" %>
+      <% end %>
     </div>
-    
-    <%# Google/Facebook Login Notifications (Devise) %>
+  </div>
+</nav>
+
+<!-- Alerts -->
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
 
+<!-- Page content -->
     <%= yield %>
+
+<!-- Footer partial -->
+  <%= render 'layouts/footer' %>
   </body>
 </html>
