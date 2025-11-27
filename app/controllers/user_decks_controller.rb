@@ -6,6 +6,10 @@ class UserDecksController < ApplicationController
   end
 
   def show
+    @user_deck = UserDeck.find(params[:id])
+    @deck = @user_deck.deck # I added this
+    @cards = @deck.cards #I added this deck.cards to define @deck
+
   end
 
   def create
@@ -21,6 +25,10 @@ class UserDecksController < ApplicationController
   private
 
   def set_user_deck
+    #@user_deck = current_user.user_decks.find(params[:id])
     @user_deck = UserDeck.find(params[:id])
   end
 end
+
+
+# test
