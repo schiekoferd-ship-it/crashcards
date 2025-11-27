@@ -13,7 +13,9 @@ Rails.application.routes.draw do
   end
 
   resources :user_decks, only: [:index, :show, :create, :destroy] do
-    resources :user_cards, only: [:show, :update]
+    resources :user_cards, only: [:show, :update] do
+      patch :reset_all, on: :collection
+    end
   end
 
 
