@@ -66,5 +66,52 @@ Card.destroy_all
 # Card.create!(deck: deck5, front: "still water", back: "Wasser ohne Kohlensäure")
 # Card.create!(deck: deck5, front: "bill/check", back: "Rechnung")
 # Card.create!(deck: deck5, front: "allergies", back: "Allergien")
+
+# Creates a user
+puts "Deletes User DB"
+User.destroy_all
+puts "..."
 user = User.create!(email: "bob@gmail.com", password: "Password123")
 puts "Created a user"
+
+# Create Decks
+puts "Deletes Deck DB"
+Deck.destroy_all
+puts "..."
+deck1 = Deck.create!(user: user, title: "Childcare Basics", source_language: "German", target_language: "English", occasion: "This is the user input text occasion blabla")
+deck2 = Deck.create!(user: user, title: "Lawyer Basics", source_language: "English", target_language: "French", occasion: "This is the user input text 222 occasion blabla")
+puts "Created 2 decks"
+
+# Creates Cards
+puts "Deletes Card DB"
+Card.destroy_all
+puts "..."
+card1 = Card.create!(deck: deck1, front_text: "lost passport", back_text: "Pass verloren")
+card2 = Card.create!(deck: deck1, front_text: "police station", back_text: "Polizeiwache")
+card3 = Card.create!(deck: deck1, front_text: "insurance claim", back_text: "Versicherungsfall")
+puts "Created 3 cards for deck1"
+card4 = Card.create!(deck: deck2, front_text: "lost passport 222", back_text: "Pass verloren 222")
+card5 = Card.create!(deck: deck2, front_text: "police station 222", back_text: "Polizeiwache 222")
+card6 = Card.create!(deck: deck2, front_text: "insurance claim 222", back_text: "Versicherungsfall 222")
+puts "Created 3 cards for deck2"
+
+# Create User Decks
+puts "Deletes User Deck DB"
+UserDeck.destroy_all
+puts "..."
+user_deck1 = UserDeck.create!(user: user, deck: deck1)
+user_deck2 = UserDeck.create!(user: user, deck: deck2)
+puts "Created 2 user decks"
+
+# Creates User Cards
+puts "Deletes User Card DB"
+UserCard.destroy_all
+puts "..."
+UserCard.create!(user_deck: user_deck1, card: card1, status: false)
+UserCard.create!(user_deck: user_deck1, card: card2, status: true)
+UserCard.create!(user_deck: user_deck1, card: card3, status: false)
+puts "Created 3 cards for deck1"
+UserCard.create!(user_deck: user_deck2, card: card4, status: false)
+UserCard.create!(user_deck: user_deck2, card: card5, status: false)
+UserCard.create!(user_deck: user_deck2, card: card6, status: true)
+puts "Created 3 cards for deck2"
