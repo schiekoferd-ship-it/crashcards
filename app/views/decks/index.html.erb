@@ -1,10 +1,45 @@
-<p>Find me in app/views/decks/index.html.erb</p>
+<div class="container py-5">
+  <!-- Page heading -->
+  <header class="text-center mb-5">
+    <span class="badge bg-white text-success border border-success mb-3">
+      Community decks
+    </span>
+    <h1 class="h2 fw-bold mb-2">CrashCard decks from other users</h1>
+    <p class="text-muted mb-0">
+      Recently created decks you can explore and reuse.
+    </p>
+  </header>
 
-<h1>CrashCard decks from other users</h1>
+  <!-- Decks grid -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <% @decks.each do |deck| %>
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0" style="min-height: 220px;">
+          <div class="card-body">
+            <h2 class="h5 card-title mb-2">
+              <%= link_to deck.title, deck_path(deck), class: "stretched-link text-decoration-none text-dark" %>
+            </h2>
 
-<% @decks.each do |deck| %>
-  <div class="deck-card">
-    <h2><%= link_to deck.title, deck_path(deck) %></h2>
-    <p><%= deck.target_language %></p>
+            <% if deck.target_language.present? %>
+              <p class="mb-2">
+                <span class="badge bg-success-subtle text-success border border-success rounded-pill">
+                  <%= deck.target_language %>
+                </span>
+              </p>
+            <% end %>
+
+            <p class="card-text text-muted mb-0">
+              Created <%= l deck.created_at.to_date, format: :long %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
-<% end %>
+
+  <% if @decks.empty? %>
+    <p class="text-center text-muted mt-4">
+      No community decks yet – be the first to create one!
+    </p>
+  <% end %>
+</div>

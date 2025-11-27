@@ -6,11 +6,12 @@ class DecksController < ApplicationController
   # No authentication here because decks are public.
 
   def index
-    @decks = Deck.all
+    @decks = Deck.order(created_at: :desc)
   end
 
   def show
     @deck = Deck.find(params[:id])
+    @cards = @deck.cards
   end
 
   def new
