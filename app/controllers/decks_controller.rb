@@ -54,7 +54,16 @@ class DecksController < ApplicationController
   end
 
   def update
-    UserDeck.create(user: @deck.user, deck: @deck)
+    # save deck
+    @deck.update(deck_params)
+    # create user deck
+    @user_deck = UserDeck.create(user: @deck.user, deck: @deck)
+
+    # create user cards
+    @deck.cards.each do |card|
+      UserCard.create(user_deck: @user_deck, card: card, status: false)
+    end
+
     redirect_to user_decks_path
   end
 
