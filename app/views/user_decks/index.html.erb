@@ -35,7 +35,7 @@
 <ul>
   <% @user_decks.each do |user_deck| %>
     <li>
-      <%= link_to user_decks_path do %> <%# user_card_path(user_deck) %>
+      <%= link_to user_deck_path(user_deck) do %> <%# "user_card_path(user_deck)" user_deck_path(user_deck) %>
         <div class="container-fluid">
           <div class="card-product d-flex justify-content-between rounded-5 mb-3">
             <div class="card-product-infos">
@@ -60,9 +60,6 @@
 </ul>
 
 
-
-
-
 <%# this is a test user deck %>
 <div class="container-fluid">
   <div class="card-product d-flex justify-content-between rounded-5 mb-3">
@@ -78,44 +75,6 @@
     <div class="bg-light">
       <div class="d-flex align-items-center justify-content-center px-4 py-5 bg-light ">
         <p class="fs-3 fw-semibold">60%</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="container-fluid">
-  <div class="card-product d-flex justify-content-between rounded-5 mb-3">
-    <div class="card-product-infos">
-      <div class="d-flex justify-content-between align-items-center">
-        <h2>Discussion about balance sheet</h2>
-        <%= link_to user_decks_path(@user_deck), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
-          <i class="fa-regular fa-trash-can text-danger px-3"></i>
-        <% end %>
-      </div>
-      <p>Spanish -> German</p>
-    </div>
-    <div class="bg-light">
-      <div class="d-flex align-items-center justify-content-center px-4 py-5 bg-light ">
-        <p class="fs-3 fw-semibold">23%</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="container-fluid">
-  <div class="card-product d-flex justify-content-between rounded-5 mb-3">
-    <div class="card-product-infos">
-      <div class="d-flex justify-content-between align-items-center">
-        <h2>Ordering in a restaurant</h2>
-        <%= link_to user_decks_path(@user_deck), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
-          <i class="fa-regular fa-trash-can text-danger px-3"></i>
-        <% end %>
-      </div>
-      <p>English -> French</p>
-    </div>
-    <div class="bg-light">
-      <div class="d-flex align-items-center justify-content-center px-4 py-5 bg-light ">
-        <p class="fs-3 fw-semibold">73%</p>
       </div>
     </div>
   </div>
