@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   root to: "pages#home"
 
-  resources :decks, only: [:index, :show, :new, :create, :edit, :update] do
+  resources :decks, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
     resources :messages, only: [:new, :create]
     resources :cards, only: [:create]
   end
