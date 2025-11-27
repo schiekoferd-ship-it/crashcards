@@ -15,6 +15,7 @@ class UserDecksController < ApplicationController
 
   def destroy
     @user_deck.destroy
+    redirect_to user_decks_path, notice: "Deck removed"
   end
 
   private
