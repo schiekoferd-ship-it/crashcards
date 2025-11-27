@@ -29,6 +29,3 @@ class UserDecksController < ApplicationController
     @user_deck = UserDeck.find(params[:id])
   end
 end
-
-
-# test
