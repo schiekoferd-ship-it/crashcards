@@ -1,38 +1,60 @@
+<!-- The permanent HEADER is set in application.html.erb -->
 <div class="container py-5">
-  <div class="bg-success text-black py-5 mb-4 text-center">
-  <h1 class="display-5 fw-bold">CrashCards</h1>
-  <p class="lead mb-0">Rapid scenario-based language learning</p>
+  <!-- This is the HERO -->
+<div class="py-3 mb-1" style="background: linear-gradient(180deg, rgba(25,135,84,0.15) 0%, rgba(25,135,84,0) 100%);">
+  <div class="container text-center py-5">
+
+    <span class="badge bg-white text-success border border-success mb-3">
+      NEW · Rapid scenario-based language trainer
+    </span>
+
+    <h1 class="display-3 fw-bold">CrashCards</h1>
+    <p class="lead text-muted mb-4">Speak confidently in the situations that matter.</p>
+
+    <% if user_signed_in? %>
+      <%= link_to "Go to My Decks", decks_path,
+          class: "btn btn-success btn-lg px-4 me-2" %>
+    <% else %>
+      <%= link_to "Start in seconds", new_user_registration_path,
+          class: "btn btn-success btn-lg px-4 me-2 shadow-sm" %>
+
+      <%= link_to "Log In", new_user_session_path,
+          class: "btn btn-outline-success btn-lg px-4" %>
+    <% end %>
+
+  </div>
 </div>
 
+<!-- HOW IT WORKS -->
+<section class="py-5">
+  <div class="container text-center">
+    <h2 class="h3 mb-4">How CrashCards works</h2>
 
-  <div class="row justify-content-center mb-5">
-    <div class="col-md-8">
-      <div class="card shadow-sm">
-        <div class="card-body p-4">
-          <h2 class="h4 text-center mb-4">How it works</h2>
+    <div class="row justify-content-center g-4">
 
-          <ol class="list-group list-group-numbered">
-            <li class="list-group-item">Choose your occasion.</li>
-            <li class="list-group-item">Select the language you want to speak in.</li>
-            <li class="list-group-item">CrashCards instantly creates a deck with essential words and phrases.</li>
-            <li class="list-group-item">Learn, repeat, and track your personal progress.</li>
-            <li class="list-group-item">Speak fluently with ease of mind! ❤️ </li>
-          </ol>
+      <div class="col-md-4">
+        <div class="border rounded-3 p-4 h-100 shadow-sm">
+          <h3 class="h5 mb-2">1. Choose your occasion</h3>
+          <p class="text-muted mb-0">Job interview, parent-teacher meeting, client call – you decide.</p>
         </div>
       </div>
+
+      <div class="col-md-4">
+        <div class="border rounded-3 p-4 h-100 shadow-sm">
+          <h3 class="h5 mb-2">2. Pick your language</h3>
+          <p class="text-muted mb-0">English, Spanish, German or any other supported language.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="border rounded-3 p-4 h-100 shadow-sm">
+          <h3 class="h5 mb-2">3. Get your micro-deck</h3>
+          <p class="text-muted mb-0">Speak confidently with essential words & phrases generated for your exact scenario.</p>
+        </div>
+      </div>
+
     </div>
   </div>
+</section>
 
-  <div class="text-center">
-    <% if user_signed_in? %>
-      <%= link_to "Go to My Decks", decks_path, class: "btn btn-primary btn-lg px-4" %>
-    <% else %>
-      <%= link_to "Log In", new_user_session_path, class: "btn btn-primary btn-lg px-4" %>
-      <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-outline-primary btn-lg px-4 ms-2" %>
-    <% end %>
-  </div>
-
-  <div class="text-center text-muted mt-4">
-    <small>CrashCards is evolving — more features coming soon.</small>
-  </div>
 </div>

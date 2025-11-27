@@ -1,13 +1,62 @@
-<p>Find me in app/views/decks/show.html.erb</p>
+<div class="container py-5">
 
-<h1><%= @deck.title %></h1>
-<p><%= deck.target_language %></p>
+  <!-- Deck Header -->
+  <header class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between mb-5">
+    <div class="text-center text-lg-start mb-3 mb-lg-0">
+      <span class="badge bg-white text-success border border-success rounded-pill mb-3 px-3">
+        <%= @deck.target_language %>
+      </span>
 
-<h3>Cards</h3>
+      <h1 class="fw-bold mb-2"><%= @deck.title %></h1>
 
-<% @cards.each do |card| %>
-  <div class="card-item">
-    <strong><%= card.front %></strong><br>
-    <em><%= card.back %></em>
-  </div>
-<% end %>
+      <p class="text-muted mb-0">
+        <%= @deck.cards.count %> cards in this deck
+      </p>
+    </div>
+
+    <!-- Start button -->
+    <div class="text-center text-lg-end">
+      <%= link_to "Start learning this deck",
+                  "#cards-section",
+                  class: "btn btn-success btn-lg px-4 shadow-sm" %>
+    </div>
+  </header>
+
+
+  <!-- Cards Section -->
+  <section id="cards-section">
+    <h3 class="h4 text-center mb-4">
+      Cards of the deck <strong class="text-success"><%= @deck.title %></strong>
+    </h3>
+
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <% @deck.cards.each do |card| %>
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body">
+              <!-- Front side -->
+              <span class="badge bg-success-subtle text-success rounded-pill mb-2 px-3">
+                Front
+              </span>
+              <p class="fs-5 fw-semibold mb-3">
+                <%= card.front_text %>
+              </p>
+
+              <hr class="my-3">
+
+              <!-- Back side -->
+              <span class="badge bg-light text-muted rounded-pill mb-2 px-3">
+                Back
+              </span>
+              <p class="text-muted mb-0">
+                <%= card.back_text %>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+</div>
