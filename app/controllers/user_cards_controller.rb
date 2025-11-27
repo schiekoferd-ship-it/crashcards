@@ -8,7 +8,7 @@ class UserCardsController < ApplicationController
 
   def show
     @card = @user_card.card
-    @deck = @user_deck.deck   # 👈 ADD THIS LINE (important for languages)
+    @deck = @user_deck.deck   #  ADDED THIS LINE (important for languages)
 
     # Ordered list of all cards in this user_deck
     @ordered_user_cards = @user_deck.user_cards.order(:id)

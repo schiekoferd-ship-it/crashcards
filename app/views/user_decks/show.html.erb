@@ -1,18 +1,81 @@
-<h1><%= @deck.title %></h1>
-<p><%= @deck.description %></p>
+<%# app/views/user_decks/show.html.erb %>
 
-<h2>Cards (<%= @cards.count %>)</h2>
+<div style="max-width: 800px; margin: 0 auto; padding: 20px;">
 
-<% @cards.each do |card| %>
-  <div style="border: 1px solid #ddd; padding: 8px; margin: 8px 0;">
-    <strong>Front:</strong> <%= card.front_text %><br>
-    <strong>Back:</strong> <%= card.back_text %>
+  <!-- Header -->
+  <div style="margin-bottom: 30px;">
+    <%= link_to "← Back to My Decks", user_decks_path,
+                style: "color: #007bff; text-decoration: none;" %>
   </div>
-<% end %>
 
-<%= link_to "Start Practice",
-            user_deck_user_card_path(@user_deck, @user_deck.user_cards.first, side: "front"),
-            style: "display: inline-block; margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; text-decoration: none;" %>
+  <!-- Deck Info -->
+  <h1><%= @deck.title %></h1>
+  <p style="color: #666;"> </p>
 
-<br><br>
-<%= link_to "← Back to My Decks", user_decks_path %>
+  <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
+    <p style="margin: 0;">
+      <strong>Language:</strong> <%= @deck.source_language %> → <%= @deck.target_language %>
+    </p>
+    <p style="margin: 10px 0 0 0;">
+      <strong>Total Cards:</strong> <%= @cards.count %>
+    </p>
+  </div>
+
+  <!-- Progress Stats -->
+  <% mastered_count = @user_deck.user_cards.where(status: true).count %>
+  <% total_count = @user_deck.user_cards.count %>
+  <% progress_percentage = total_count > 0 ? (mastered_count.to_f / total_count * 100).round : 0 %>
+
+  <div style="background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 20px 0;">
+    <h3 style="margin: 0 0 10px 0;">Your Progress</h3>
+    <div style="background: #fff; height: 20px; border-radius: 10px; overflow: hidden; margin: 10px 0;">
+      <div style="background: #28a745; height: 100%; width: <%= progress_percentage %>%; transition: width 0.3s;"></div>
+    </div>
+    <p style="margin: 5px 0 0 0; color: #666;">
+      <%= mastered_count %> of <%= total_count %> cards mastered (<%= progress_percentage %>%)
+    </p>
+  </div>
+
+  <!-- Practice Button (BIG and prominent) -->
+  <% first_card = @user_deck.user_cards.where(status: false).first || @user_deck.user_cards.first %>
+  <% if first_card %>
+    <%= link_to "▶ Start Practice",
+                user_deck_user_card_path(@user_deck, first_card, side: "front"),
+                style: "display: block; text-align: center; padding: 20px; background: #007bff; color: white; text-decoration: none; border-radius: 10px; font-size: 20px; font-weight: bold; margin: 30px 0;" %>
+  <% else %>
+    <p style="text-align: center; color: #666; font-style: italic;">No cards available in this deck.</p>
+  <% end %>
+
+  <!-- Cards List (collapsible/preview) -->
+  <details style="margin-top: 40px;">
+    <summary style="cursor: pointer; font-size: 18px; font-weight: bold; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+      View All Cards (<%= @cards.count %>)
+    </summary>
+
+    <div style="margin-top: 20px;">
+      <% @cards.each do |card| %>
+        <div style="border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; background: #fff;">
+          <div style="display: flex; justify-content: space-between;">
+            <div style="flex: 1;">
+              <strong style="color: #007bff;"><%= @deck.source_language %>:</strong>
+              <%= card.front_text %>
+            </div>
+            <div style="flex: 1; text-align: right;">
+              <strong style="color: #28a745;"><%= @deck.target_language %>:</strong>
+              <%= card.back_text %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </details>
+
+  <!-- Delete Deck Button (at bottom) -->
+  <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd;">
+    <%= link_to "🗑 Delete This Deck",
+                user_deck_path(@user_deck),
+                data: { turbo_method: :delete, turbo_confirm: "Are you sure? This will delete all your progress on this deck." },
+                style: "color: #dc3545; text-decoration: none;" %>
+  </div>
+
+</div>

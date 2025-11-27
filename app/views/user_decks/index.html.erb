@@ -35,7 +35,7 @@
 <ul>
   <% @user_decks.each do |user_deck| %>
     <li>
-      <%= link_to user_decks_path do %> <%# user_card_path(user_deck) %>
+      <%= link_to user_deck_path(user_deck) do %>
         <div class="container-fluid">
           <div class="card-product d-flex justify-content-between rounded-5 mb-3">
             <div class="card-product-infos">
