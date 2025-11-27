@@ -1,5 +1,52 @@
-<h1>This is where the cards are</h1>
+<h2 class="text-center text-secondary fw-light display-6 mb-4">Your Flashcards</h2>
 
 
+<div class="container d-flex justify-content-center">
+  <div class="w-100 w-md-50 w-lg-40"> <!-- schmaler Container -->
 
-<%= @response.content %>
+    <% @words_array.each do |hash| %>
+      <div class="row mb-3">
+
+        <!-- left card -->
+        <div class="col-12 col-md-6 mb-2 mb-md-0">
+          <div class="border rounded-3 bg-white shadow-sm position-relative d-flex justify-content-center align-items-center" style="height: 180px; padding: 1rem;">
+            <!-- flag top-left -->
+            <div class="position-absolute" style="top: 8px; left: 10px; font-size: 1.5rem;">
+              <%= @deck.source_language.each_grapheme_cluster.first %>
+            </div>
+            <h3 class="m-0 text-center" style="font-size: 1.25rem; line-height: 1.5rem;">
+              <%= hash.keys.first %>
+            </h3>
+          </div>
+        </div>
+
+        <!-- right card -->
+        <div class="col-12 col-md-6">
+          <div class="border rounded-3 bg-secondary text-white shadow-sm position-relative d-flex justify-content-center align-items-center" style="height: 180px; padding: 1rem;">
+            <!-- flag top-left -->
+            <div class="position-absolute" style="top: 8px; left: 10px; font-size: 1.5rem;">
+              <%= @deck.target_language.each_grapheme_cluster.first %>
+            </div>
+            <h3 class="m-0 text-center fw-bold" style="font-size: 1.25rem; line-height: 1.5rem;">
+              <%= hash.values.first %>
+            </h3>
+          </div>
+        </div>
+
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+<!-- Fixed bottom buttons -->
+<div class="position-fixed bottom-0 start-50 translate-middle-x mb-4 d-flex gap-3">
+  <%= link_to "Delete deck",
+      deck_path(@deck),
+      data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+      class: "btn btn-dark btn-lg px-5 shadow" %>
+
+  <%= simple_form_for @deck, data: { turbo: false } do |f| %>
+    <%= f.button :submit, "Save deck", class: "btn btn-success btn-lg px-5 shadow" %>
+  <% end %>
+</div>
