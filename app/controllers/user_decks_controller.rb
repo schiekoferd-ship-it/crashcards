@@ -2,8 +2,7 @@ class UserDecksController < ApplicationController
   before_action :set_user_deck, only: [:show, :destroy]
 
   def index
-     @user_decks = current_user.user_decks.includes(:deck)
-    #@user_decks = UserDeck.all
+    @user_decks = UserDeck.all
   end
 
   def show
@@ -25,7 +24,7 @@ class UserDecksController < ApplicationController
   private
 
   def set_user_deck
-    @user_deck = current_user.user_decks.find(params[:id])
-    #@user_deck = user_decks.find(params[:id])
+    #@user_deck = current_user.user_decks.find(params[:id])
+    @user_deck = UserDeck.find(params[:id])
   end
 end
