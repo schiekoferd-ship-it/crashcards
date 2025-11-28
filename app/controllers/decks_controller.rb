@@ -270,12 +270,12 @@ class DecksController < ApplicationController
     else
         open_ai_call
     end
+    # set title
+    set_title
     @deck.save
   end
 
   def update
-    # set title
-    set_title
 
     # create user deck
     @user_deck = UserDeck.create(user: @deck.user, deck: @deck)

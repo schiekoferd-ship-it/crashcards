@@ -21,11 +21,11 @@
       </span>
 
       <h1 class="fw-bold mb-2">
-        🎉 Your new deck of CrashCards <%= @deck.title %>
+        🎉 <%= @deck.title %>
       </h1>
 
       <p class="text-muted mb-0">
-        <%= @words_array.size %> CrashCards will be created
+        <%= @words_array.size %> CrashCards created
       </p>
     </div>
 
@@ -34,7 +34,7 @@
 
   <!-- Cards Section -->
   <section id="cards-section">
-    <h3 class="h4 text-center mb-4">New CrashCards</h3>
+    <h3 class="h4 text-center mb-4">Your new deck of CrashCards</h3>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <% @words_array.each do |hash| %>
@@ -71,12 +71,12 @@
 
 <!-- Bottom Buttons -->
 <div class="position-fixed bottom-0 start-50 translate-middle-x mb-4 d-flex gap-3">
-  <%= link_to "Delete",
+  <%= link_to "Discard",
       deck_path(@deck),
       data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
-      class: "btn btn-dark btn-lg px-5 shadow" %>
+      class: "btn btn-secondary btn-lg px-5 shadow" %>
 
   <%= simple_form_for @deck, data: { turbo: false } do |f| %>
-    <%= f.button :submit, "Save new CrashCards", class: "btn btn-success btn-lg px-5 shadow" %>
+    <%= f.button :submit, "Save to My Decks", class: "btn btn-success btn-lg px-5 shadow" %>
   <% end %>
 </div>
