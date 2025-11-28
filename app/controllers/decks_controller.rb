@@ -265,7 +265,7 @@ class DecksController < ApplicationController
 
     if @deck.source_language == "false"
       @deck.destroy
-      redirect_to new_deck_path, alert: "Language could not be detected. Please try again!"
+      redirect_to new_deck_path
       return
     else
         open_ai_call
