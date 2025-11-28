@@ -307,21 +307,51 @@ class DecksController < ApplicationController
     example = '[
                 { "Windel": "diaper" },
                 { "füttern": "to feed" },
-                { "schlafen": "to sleep" }
+                { "schlafen": "to sleep" },
+                { "Baby weint": "The baby is crying" },
+                { "Ich muss die Windel wechseln": "I need to change the diaper" },
+                { "Kann ich dir helfen?": "Can I help you?" },
+                { "Spielzeug": "toy" },
+                { "Flasche geben": "to give a bottle" },
+                { "Gute Nacht sagen": "to say good night" },
+                { "Zahnen": "teething" }
               ]'
     system_prompt = "You are an expert in translating practical vocabulary from #{@deck.source_language} to #{@deck.target_language}.
                       Your task is to generate a list of the most important useful words and phrases needed in the following situation: #{@deck.occasion}.
                       Carefully analyze and interpret the situation.
-                      Identify vocabulary that is:
-                        practical and directly usable in everyday communication
+                      Identify vocabulary and **short, practical sentences or phrases** that are:
+                        directly usable in everyday communication
                         relevant for the described situation
-                        concise and suitable for flashcards (single words or short phrases)
-                        not grammar explanations, not dialogues, not meta-content
+                        concise enough for flashcards (one word, short phrase, or short sentence)
+                        Do not provide long explanations, dialogues, or meta-content.
+                      Pay careful attention to capitalization:
+                      - For single words and very short phrases (one or two words):
+                        - Write them exactly in the correct grammatical case for the target language.
+                        - Do NOT capitalize words for emphasis or visual highlighting.
+                        - English, French, Spanish, etc.: common nouns are lowercase unless proper nouns.
+                        - German: capitalize all nouns, lowercase other parts of speech.
+                    - For short sentences:
+                        - Start the sentence with a capital letter.
+                        - Apply all normal capitalization rules of the target language throughout the sentence (e.g., German nouns capitalized, English only proper nouns capitalized).
+                        - Do NOT capitalize words randomly or for emphasis.
+                      - Never capitalize words incorrectly.
+                      - Never write German common nouns in lowercase or non-German words in uppercase unless grammatically required.
+                    Pay careful attention to punctuation and sentence completion:
+                      - For single words or very short phrases (one or two words):
+                          - Do NOT add any punctuation.
+                      - For short sentences (including questions, statements, and imperatives):
+                          - Always end the sentence with the correct punctuation:
+                              - Use a period (.) for statements or commands.
+                              - Use a question mark (?) for questions.
+                          - Never omit punctuation at the end of a sentence, even if the sentence is short.
+                          - Apply all other punctuation marks according to normal grammar rules of the target language.
+                      - Do NOT add extra punctuation, exclamation marks, or emojis.
                       Do not simply translate the situation itself. Think beyond it and select vocabulary that a person realistically needs to handle the situation.
                       Internally rate each candidate vocabulary item from 1 to 10 for:
                         practicality
                         relevance
                         everyday usability
+                        phrase usability
                       Select only the top 50 items with the highest internal rating.
                       OUTPUT FORMAT (strict):
                         Output an array (length = 50)
@@ -339,7 +369,8 @@ class DecksController < ApplicationController
                         All output must be valid JSON. No comments. No trailing commas.
                         Do not output anything before or after the JSON array.
                         Output only the array, nothing else
-                        If both singular and plural exist, include only the singular form unless the plural is more contextually relevant.
+                        Include a mix of single words, phrases, and at most two-word sentences for maximum usefulness
+                        If both singular and plural exist, include only the singular form unless the plural is more contextually relevant, except when short phrases/sentences require plural forms.
                         Numbers must always be written out in full words in both languages. For example: if a number contains multiple digits, write the entire number as words only and do not use any digits.
                         When expressing years, always use a two-part decade–decade structure appropriate for the target language (for example: 2025 → twenty twenty-five). Never express years using a >>thousand<< or >>hundred<< construction in any language.
                         Do not use digits anywhere in the output.
