@@ -71,7 +71,7 @@ Card.destroy_all
 puts "Deletes User DB"
 User.destroy_all
 puts "..."
-user = User.create!(email: "bob@gmail.com", password: "Password123")
+user = User.create!(email: "bob@gmail.com", password: "wawqat-1jyfrr-peczeX")
 puts "Created a user"
 
 # Create Decks
