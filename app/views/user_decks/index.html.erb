@@ -25,12 +25,12 @@
 
 <div class="container py-5">
   <!-- User Decks grid -->
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 ">
     <% @user_decks.each do |user_deck| %>
-      <div onclick="window.location='<%= user_deck_path(user_deck) %>'" style="cursor: pointer;" role="link">
-        <div class="col">
-          <div class="card h-100 shadow-sm border-0" style="min-height: 190px;">
-            <div class="card-body user-decks">
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0" style="min-height: 190px;">
+          <div class="card-body user-decks">
+            <div onclick="window.location='<%= user_deck_path(user_deck) %>'" style="cursor: pointer;" role="link">
               <div class="d-flex justify-content-between align-items-center">
                 <h2 class="h5 card-title mb-2">
                   <%= user_deck.deck.title %>
@@ -52,19 +52,19 @@
                 </span>
               </p>
 
-              <div class="bg-light">
-                <div class="d-flex align-items-center justify-content-center px-4 py-2 bg-light ">
-                  <p class="fs-3 fw-semibold pt-3">
+                <p class="fs-3 fw-semibold pt-2 my-0">
+                  <div class="practice-progress">
+                    <div class="progress-bar-wrapper">
+                      <div class="progress-bar-track">
+                        <div class="progress-bar-fill" style="width: <%= user_deck.progress_percent %>%"></div>
+                      </div>
+                      <div class="progress-counter fs-5 ms-2">
+                        <%= user_deck.progress_percent %>%
+                      </div>
+                    </div>
+                  </div>
+                </p>
 
-                    <% if user_deck.progress_percent == 100 %>
-                      <i class="fa-regular fa-circle-check fs-1 fw-bold text-success"></i>
-                    <% else %>
-                      <%= user_deck.progress_percent %>%
-                    <% end %>
-
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
