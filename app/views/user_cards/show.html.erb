@@ -1,89 +1,99 @@
-<%# app/views/user_cards/show.html.erb %>
-
-<div class="practice-page">
+<div class="container py-5">
 
   <!-- Header bar -->
-  <header class="practice-header">
-    <div class="practice-title">Practice</div>
-    <div class="practice-home">
-      <%= link_to root_path do %>
-        🏠
-      <% end %>
-    </div>
-  </header>
-
-  <!-- Progress -->
-  <div class="practice-progress">
-    <div class="progress-bar-wrapper">
-      <div class="progress-bar-track">
-        <% if @total_cards.to_i > 0 %>
-          <% width = (@current_position.to_f / @total_cards * 100).round %>
-        <% else %>
-          <% width = 0 %>
-        <% end %>
-        <div class="progress-bar-fill" style="width: <%= width %>%"></div>
-      </div>
-      <div class="progress-counter">
-        <%= @current_position %>/<%= @total_cards %>
-      </div>
-    </div>
+  <div class="mb-3">
+    <%= link_to user_decks_path, class: "btn btn-light text-dark" do %>
+      ← Back to Overview
+    <% end %>
   </div>
 
-  <!-- Language label -->
-  <div class="practice-language">
-    <% if @side == "front" %>
-        <%= @deck.source_language %>
-    <% else %>
-        <%= @deck.target_language %>
-    <% end %>
+  <!-- Progress -->
+  <div class="practice-progress mb-4">
+    <div class="progress-bar-wrapper">
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" style="width: <%= @progress_percentage %>%"></div>
+      </div>
+      <div class="progress-counter">
+        <%= @mastered_cards %>/<%= @total_cards %>
+      </div>
+    </div>
   </div>
 
   <!-- Card -->
-  <div class="practice-card-wrapper">
-    <div class="practice-card">
-      <div class="practice-word">
-        <% if @side == "front" %>
-          <%= @card.front_text.upcase %>
-        <% else %>
-          <%= @card.back_text %>
-        <% end %>
-      </div>
+  <div class="row justify-content-center mb-3">
+    <div class="col-12 col-md-4">
+      <% card_link_path = @side == "front" ? user_deck_user_card_path(@user_deck, @user_card, side: "back") : "#" %>
+      <%= link_to card_link_path,
+                  class: "practice-card d-flex flex-column text-center text-decoration-none mx-auto",
+                  style: "width: 100%; min-height: 200px;" do %>
+
+        <!-- Language at card top -->
+        <div class="practice-language mb-2" style="font-weight: normal;">
+          <%= @side == "front" ? @deck.source_language : @deck.target_language %>
+        </div>
+
+        <!-- card content centered -->
+        <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+          <div class="practice-word" style="font-weight: <%= @side == 'back' ? 'bold' : 'normal' %>;">
+            <%= @side == "front" ? @card.front_text : @card.back_text %>
+          </div>
+        </div>
+
+      <% end %>
     </div>
   </div>
 
+
   <!-- Actions -->
-  <div class="practice-actions">
+  <div class="practice-actions mb-3 text-center">
     <% if @side == "front" %>
-      <!-- FRONT SIDE: show Flip button -->
       <%= link_to "Flip card",
                   user_deck_user_card_path(@user_deck, @user_card, side: "back"),
-                  class: "btn-flip" %>
+                  class: "btn btn-dark me-2" %>
     <% else %>
-      <!-- BACK SIDE: Wrong / Correct buttons -->
-      <%= button_to "Wrong (still learning)",
+      <%= button_to "Repeat again",
                     user_deck_user_card_path(@user_deck, @user_card, side: "front", answer: "wrong"),
                     method: :patch,
-                    class: "btn-wrong" %>
+                    class: "btn btn-secondary me-2" %>
 
-      <%= button_to "Correct (I know this)",
+      <%= button_to "I knew this!",
                     user_deck_user_card_path(@user_deck, @user_card, side: "front", answer: "correct"),
                     method: :patch,
-                    class: "btn-correct" %>
+                    class: "btn btn-success" %>
     <% end %>
   </div>
 
-  <!-- Next / Previous navigation -->
-  <div class="practice-nav">
-    <% if @previous_user_card %>
-      <%= link_to "Previous",
-                  user_deck_user_card_path(@user_deck, @previous_user_card, side: "front"),
-                  class: "nav-link" %>
-    <% end %>
+  <!-- Modal when all cards are finished -->
+  <% if params[:finished] == "true" %>
+    <div class="modal fade show"
+         style="display:block; background:rgba(0,0,0,0.5)"
+         role="dialog">
 
-    <% if @next_user_card %>
-      <%= link_to "Next",
-                  user_deck_user_card_path(@user_deck, @next_user_card, side: "front"),
-                  class: "nav-link" %>
-    <% end %>
-  </div>
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title">Congratulations!</h5>
+          </div>
+
+          <div class="modal-body">
+            <p>You mastered all your CrashCards!</p>
+            <p>Do you want to return to your overview or try again?</p>
+          </div>
+
+          <div class="modal-footer">
+            <%= link_to "Back to overview",
+                        root_path,
+                        class: "btn btn-secondary" %>
+
+            <%= button_to "Try again",
+                          reset_all_user_deck_user_cards_path(@user_deck),
+                          method: :patch,
+                          class: "btn btn-success" %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>

@@ -7,4 +7,8 @@ class UserDeck < ApplicationRecord
     learned = user_cards.where(status: true).count
     ((learned.to_f / user_cards.count) * 100).round
   end
+
+  def next_user_card_for(user_deck)
+    user_deck.user_cards.find_by(status: false) || user_deck.user_cards.first
+  end
 end
