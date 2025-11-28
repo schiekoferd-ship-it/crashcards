@@ -58,7 +58,7 @@ class UserCardsController < ApplicationController
         redirect_to user_deck_user_card_path(@user_deck, @user_card, side: "front", finished: true)
       end
     else
-      redirect_to user_deck_user_card_path(@user_deck, @user_card, side: "front"),
+      redirect_to user_deck_user_card_path(@user_deck, @user_card, side: "front")
     end
   end
 
