@@ -27,7 +27,7 @@
   <!-- User Decks grid -->
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     <% @user_decks.each do |user_deck| %>
-      <div onclick="window.location='<%= user_deck_path(user_deck) %>'" style="cursor: pointer;" role="link">
+      <div onclick="window.location='<%= user_deck_user_card_path(user_deck, user_deck.next_user_card_for(user_deck)) %>'" style="cursor: pointer;" role="link">
         <div class="col">
           <div class="card h-100 shadow-sm border-0" style="min-height: 190px;">
             <div class="card-body user-decks">
