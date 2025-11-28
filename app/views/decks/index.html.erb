@@ -16,9 +16,10 @@
       <div class="col">
         <div class="card h-100 shadow-sm border-0" style="min-height: 190px;">
           <div class="card-body decks">
-            <h2 class="h5 card-title mb-2">
-              🗂️ <%= link_to deck.title, deck_path(deck), class: "stretched-link text-decoration-none text-dark" %>
-            </h2>
+
+              <h2 class="h5 card-title mb-2 mt-1">
+                🗂️ <%= link_to deck.title, deck_path(deck), class: "stretched-link text-decoration-none text-dark" %>
+              </h2>
 
             <% if deck.target_language.present? %>
               <p class="mb-2">
@@ -26,20 +27,25 @@
                   <%= deck.source_language %>
                 </span>
                 →
-                <span class="badge bg-success-subtle text-success border border-success rounded-pill">
+                <span class="badge bg-light-subtle text-muted border border-muted rounded-pill">
                   <%= deck.target_language %>
                 </span>
               </p>
             <% end %>
 
-            <p class="card-text text-muted mb-0">
-              Created <%= l deck.created_at.to_date, format: :long %>
+            <p class="text-muted mb-0">
+              <%= deck.cards.count %> CrashCards in this deck
             </p>
+
+            <p class="card-text text-muted mb-0 mt-1">
+              <%= l deck.created_at.to_date, format: :short %>
+            </p>
+
             <div class="d-flex justify-content-end mt-3">
-              <div class="align-items-center">
+              <div class="mt-auto p-2">
                 <%= form_with url: user_decks_path, method: :post, local: true, html: { style: 'display:inline' } do %>
                   <%= hidden_field_tag :deck_id, deck.id %>
-                  <%= button_tag '+', type: 'submit', class: 'btn btn-success px-3 py-2', style: 'position: relative; z-index: 2;', onclick: 'event.stopPropagation();', aria: { label: "Add deck" } %>
+                  <%= button_tag 'Add to my decks', type: 'submit', class: 'btn btn-success px-3 py-2', style: 'position: relative; z-index: 2;', onclick: 'event.stopPropagation();', aria: { label: "Add deck" } %>
                 <% end %>
               </div>
             </div>
