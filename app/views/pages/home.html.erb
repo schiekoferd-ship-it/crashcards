@@ -12,7 +12,7 @@
     <p class="lead text-muted mb-4">Speak confidently in the situations that matter.</p>
 
     <% if user_signed_in? %>
-      <%= link_to "Go to My Decks", decks_path,
+      <%= link_to "Go to My CrashCards", decks_path,
           class: "btn btn-success btn-lg px-4 me-2" %>
     <% else %>
       <%= link_to "Start in seconds", new_user_registration_path,

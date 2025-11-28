@@ -1,28 +1,79 @@
 <% chat_gpt_languages = ["🇦🇱 Albanian","🇪🇹 Amharic","🇸🇦 Arabic","🇦🇲 Armenian","🇧🇩 Bengali","🇧🇦 Bosnian","🇧🇬 Bulgarian","🇲🇲 Burmese","🇦🇩 Catalan","🇨🇳 Chinese","🇭🇷 Croatian","🇨🇿 Czech","🇩🇰 Danish","🇳🇱 Dutch","🇪🇪 Estonian","🇫🇮 Finnish","🇫🇷 French","🇬🇪 Georgian","🇩🇪 German","🇬🇷 Greek","🇮🇳 Gujarati","🇮🇳 Hindi","🇭🇺 Hungarian","🇮🇸 Icelandic","🇮🇩 Indonesian","🇮🇹 Italian","🇯🇵 Japanese","🇮🇳 Kannada","🇰🇿 Kazakh","🇰🇷 Korean","🇱🇻 Latvian","🇱🇹 Lithuanian","🇲🇰 Macedonian","🇲🇾 Malay","🇮🇳 Malayalam","🇮🇳 Marathi","🇲🇳 Mongolian","🇳🇴 Norwegian","🇮🇷 Persian","🇵🇱 Polish","🇵🇹 Portuguese","🇮🇳 Punjabi","🇷🇴 Romanian","🇷🇺 Russian","🇷🇸 Serbian","🇸🇰 Slovak","🇸🇮 Slovenian","🇸🇴 Somali","🇪🇸 Spanish","🇰🇪 Swahili","🇸🇪 Swedish","🇵🇭 Tagalog","🇮🇳 Tamil","🇮🇳 Telugu","🇹🇭 Thai","🇹🇷 Turkish","🇺🇦 Ukrainian","🇵🇰 Urdu","🇻🇳 Vietnamese"] %>
 <% chat_gpt_languages = ["🇬🇧 English", "🇫🇷 French", "🇩🇪 German", "🇮🇹 Italian", "🇪🇸 Spanish", "🇨🇳 Chinese", "🇮🇳 Hindi", "🇧🇩 Bengali", "🇵🇹 Portuguese", "🇷🇺 Russian", "🇯🇵 Japanese", "🇰🇷 Korean"] %>
 
-<h2 class="text-center text-secondary fw-light display-6 mb-4">
-  Create a New Deck
-</h2>
+<div class="container py-5">
+  <!-- Header in CrashCards style -->
+ <header class="text-center mb-5">
+  <span
+    class="badge rounded-pill mb-3 px-3"
+    style="background: rgba(142, 68, 173, 0.10);
+           color: #8e44ad;
+           border: 1px solid rgba(142, 68, 173, 0.35);">
+    Create your personal CrashCard deck
+  </span>
 
-<% chat_gpt_languages = ["🇬🇧 English", "🇫🇷 French", "🇩🇪 German", "🇮🇹 Italian", "🇪🇸 Spanish", "🇨🇳 Chinese", "🇮🇳 Hindi", "🇧🇩 Bengali", "🇵🇹 Portuguese", "🇷🇺 Russian", "🇯🇵 Japanese", "🇰🇷 Korean"] %>
+  <h1 class="fw-bold mb-2">Create new CrashCards</h1>
+  <p class="text-muted mb-0">
+    Describe your occasion and choose the language you want to speak in.
+  </p>
+</header>
 
-<div class="container d-flex justify-content-center">
-  <div class="w-100 w-md-50 w-lg-40"> <!-- schmaler, zentrierter Container -->
+  <!-- Centered, narrow form card -->
+  <div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div
+      class="card border-0 shadow-sm rounded-4 p-4 p-md-5 position-relative overflow-hidden"
+      style="background: linear-gradient(180deg, rgba(25,135,84,0.06) 0%, rgba(25,135,84,0) 100%);">
 
-    <%= simple_form_for @deck, data: { turbo: false } do |f| %>
-      <div class="mb-3">
-        <%= f.input :occasion, label: "Occasion", required: true, input_html: { class: "form-control", placeholder: "Describe your occasion you need the vocabulary for" } %>
+      <!-- subtle top accent bar -->
+      <div
+        class="position-absolute top-0 start-0 w-100"
+        style="height: 4px; background: rgba(25,135,84,0.6);">
       </div>
 
-      <div class="mb-4">
-        <%= f.input :target_language, collection: chat_gpt_languages, label: "Target Language", input_html: { class: "form-select" } %>
-      </div>
+        <%= simple_form_for @deck, data: { turbo: false } do |f| %>
 
-      <div class="text-center">
-        <%= f.button :submit, "Generate cards", class: "btn btn-success btn-lg px-5 shadow" %>
-      </div>
-    <% end %>
+          <div class="mb-4">
+            <h2 class="h5 mb-1">Describe your occasion</h2>
+            <p class="text-muted small mb-2">
+              Example: "I want to check into a hotel and understand the receptionist."
+            </p>
+            <%= f.input :occasion,
+                        label: false,
+                        required: true,
+                        input_html: {
+                          class: "form-control",
+                          placeholder: "Type here"
+                        } %>
+          </div>
 
+        <hr class="my-4" style="opacity: 0.15;">
+
+          <div class="mb-4">
+            <h2 class="h6 mb-1">Language you want to speak in</h2>
+            <p class="text-muted small mb-2">
+              CrashCards will generate cards in this language.
+            </p>
+            <%= f.input :target_language,
+                        collection: chat_gpt_languages,
+                        label: false,
+                        input_html: { class: "form-select" } %>
+          </div>
+
+          <div class="text-center">
+            <%= f.button :submit,
+                         "Generate cards",
+                         class: "btn btn-success btn-lg px-5 shadow-sm" %>
+          </div>
+
+        <% end %>
+        <div class="text-center mt-4">
+          <%= link_to "← Back to my decks",
+              decks_path,
+              class: "btn btn-outline-success px-4" %>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>

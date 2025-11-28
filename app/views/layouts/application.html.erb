@@ -21,23 +21,49 @@
         <% end %>
 
         <!-- Mobile toggler -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCrashcards" aria-controls="navbarCrashcards" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarCrashcards" aria-controls="navbarCrashcards"
+                aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Right side -->
-        <div class="collapse navbar-collapse justify-content-end" id="navbarCrashcards">
-          <% if user_signed_in? %>
-            <%= link_to "My Decks", user_decks_path, class: "btn btn-success ms-2" %>
-          <% else %>
-            <%= link_to "Log in", new_user_session_path, class: "btn btn-outline-success me-2" %>
-            <%= link_to "Sign up", new_user_registration_path, class: "btn btn-success" %>
-          <% end %>
+        <!-- Center & Right Side -->
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCrashcards">
+
+          <!-- Centered Links -->
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item mx-3">
+              <%= link_to "Community Decks",
+                          decks_path,
+                          class: "nav-link text-success fw-semibold" %>
+            </li>
+
+            <li class="nav-item mx-3">
+              <%= link_to "My CrashCards",
+                          user_decks_path,
+                          class: "nav-link fw-semibold",
+                          style: "color: #8e44ad;" %>
+            </li>
+          </ul>
+
+          <!-- Button Right -->
+          <div class="d-flex">
+            <%= link_to "Create New CrashCards",
+                        new_deck_path,
+                        class: "btn px-4 py-2",
+                        style: "
+                          background: rgba(142, 68, 173, 0.12);
+                          color: #8e44ad;
+                          border: 1px solid rgba(142, 68, 173, 0.5);
+                          border-radius: 50px;
+                        " %>
+          </div>
+
         </div>
+
       </div>
     </nav>
 
-    <%# Google/Facebook Login Notifications (Devise) %>
     <!-- Alerts -->
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>

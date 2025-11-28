@@ -1,52 +1,82 @@
-<h2 class="text-center text-secondary fw-light display-6 mb-4">Your Flashcards</h2>
+<!-- Purble Card Hover -->
+<style>
+  .card-edit {
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card-edit:hover {
+    background-color: #f4ecff; /* light purple */
+    transform: translateY(-2px);
+    box-shadow: 0 0.75rem 1.5rem rgba(120, 90, 200, 0.25);
+  }
+</style>
 
+<!-- General Container copy-pasted from show.html.erb -->
+<div class="container py-5">
 
-<div class="container d-flex justify-content-center">
-  <div class="w-100 w-md-50 w-lg-40"> <!-- schmaler Container -->
+  <!-- Deck Header -->
+  <header class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between mb-5">
+    <div class="text-center text-lg-start mb-3 mb-lg-0">
+      <span class="badge bg-white text-success border border-success rounded-pill mb-3 px-3">
+        <%= @deck.target_language %>
+      </span>
 
-    <% @words_array.each do |hash| %>
-      <div class="row mb-3">
+      <h1 class="fw-bold mb-2">
+        🎉 Your new deck of CrashCards <%= @deck.title %>
+      </h1>
 
-        <!-- left card -->
-        <div class="col-12 col-md-6 mb-2 mb-md-0">
-          <div class="border rounded-3 bg-white shadow-sm position-relative d-flex justify-content-center align-items-center" style="height: 180px; padding: 1rem;">
-            <!-- flag top-left -->
-            <div class="position-absolute" style="top: 8px; left: 10px; font-size: 1.5rem;">
-              <%= @deck.source_language.each_grapheme_cluster.first %>
+      <p class="text-muted mb-0">
+        <%= @words_array.size %> CrashCards will be created
+      </p>
+    </div>
+
+    <div class="text-center text-lg-end"></div>
+  </header>
+
+  <!-- Cards Section -->
+  <section id="cards-section">
+    <h3 class="h4 text-center mb-4">New CrashCards</h3>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <% @words_array.each do |hash| %>
+        <div class="col">
+          <!-- Card wrapper -->
+          <div class="card card-edit h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body">
+
+              <!-- Front -->
+              <span class="badge bg-success-subtle text-success rounded-pill mb-2 px-3">
+                Front
+              </span>
+              <p class="fs-5 fw-semibold mb-3 text-start">
+                <%= hash.keys.first %>
+              </p>
+
+              <hr class="my-3">
+
+              <!-- Back -->
+              <span class="badge bg-light text-muted rounded-pill mb-2 px-3">
+                Back
+              </span>
+              <p class="text-muted mb-0 text-start">
+                <%= hash.values.first %>
+              </p>
+
             </div>
-            <h3 class="m-0 text-center" style="font-size: 1.25rem; line-height: 1.5rem;">
-              <%= hash.keys.first %>
-            </h3>
           </div>
         </div>
-
-        <!-- right card -->
-        <div class="col-12 col-md-6">
-          <div class="border rounded-3 bg-secondary text-white shadow-sm position-relative d-flex justify-content-center align-items-center" style="height: 180px; padding: 1rem;">
-            <!-- flag top-left -->
-            <div class="position-absolute" style="top: 8px; left: 10px; font-size: 1.5rem;">
-              <%= @deck.target_language.each_grapheme_cluster.first %>
-            </div>
-            <h3 class="m-0 text-center fw-bold" style="font-size: 1.25rem; line-height: 1.5rem;">
-              <%= hash.values.first %>
-            </h3>
-          </div>
-        </div>
-
-      </div>
-    <% end %>
-
-  </div>
+      <% end %>
+    </div>
+  </section>
 </div>
 
-<!-- Fixed bottom buttons -->
+<!-- Bottom Buttons -->
 <div class="position-fixed bottom-0 start-50 translate-middle-x mb-4 d-flex gap-3">
-  <%= link_to "Delete deck",
+  <%= link_to "Delete",
       deck_path(@deck),
       data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
       class: "btn btn-dark btn-lg px-5 shadow" %>
 
   <%= simple_form_for @deck, data: { turbo: false } do |f| %>
-    <%= f.button :submit, "Save deck", class: "btn btn-success btn-lg px-5 shadow" %>
+    <%= f.button :submit, "Save new CrashCards", class: "btn btn-success btn-lg px-5 shadow" %>
   <% end %>
 </div>
