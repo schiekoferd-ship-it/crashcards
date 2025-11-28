@@ -22,15 +22,15 @@ class UserDecksController < ApplicationController
     end
 
     if @user_deck.save
-      redirect_to user_decks_path, notice: "Deck added to your collection!"
+      redirect_to user_decks_path
     else
-      redirect_back fallback_location: decks_path, alert: "Could not add deck."
+      redirect_back fallback_location: decks_path
     end
   end
 
   def destroy
     @user_deck.destroy
-    redirect_to user_decks_path, notice: "Deck removed"
+    redirect_to user_decks_path
   end
 
   private

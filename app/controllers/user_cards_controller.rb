@@ -59,7 +59,6 @@ class UserCardsController < ApplicationController
       end
     else
       redirect_to user_deck_user_card_path(@user_deck, @user_card, side: "front"),
-                  alert: "Could not update card"
     end
   end
 
