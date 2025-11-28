@@ -1,7 +1,7 @@
 require "json"
 
 class DecksController < ApplicationController
-  before_action :set_deck, only: [:edit, :update]
+  before_action :set_deck, only: [:edit, :update, :destroy]
 
   # OPEN_AI_LANGUAGES = ["🇦🇱 Albanian","🇪🇹 Amharic","🇸🇦 Arabic","🇦🇲 Armenian","🇧🇩 Bengali","🇧🇦 Bosnian","🇧🇬 Bulgarian","🇲🇲 Burmese","🇦🇩 Catalan","🇨🇳 Chinese","🇭🇷 Croatian","🇨🇿 Czech","🇩🇰 Danish","🇳🇱 Dutch","🇪🇪 Estonian","🇫🇮 Finnish","🇫🇷 French","🇬🇪 Georgian","🇩🇪 German","🇬🇷 Greek","🇮🇳 Gujarati","🇮🇳 Hindi","🇭🇺 Hungarian","🇮🇸 Icelandic","🇮🇩 Indonesian","🇮🇹 Italian","🇯🇵 Japanese","🇮🇳 Kannada","🇰🇿 Kazakh","🇰🇷 Korean","🇱🇻 Latvian","🇱🇹 Lithuanian","🇲🇰 Macedonian","🇲🇾 Malay","🇮🇳 Malayalam","🇮🇳 Marathi","🇲🇳 Mongolian","🇳🇴 Norwegian","🇮🇷 Persian","🇵🇱 Polish","🇵🇹 Portuguese","🇮🇳 Punjabi","🇷🇴 Romanian","🇷🇺 Russian","🇷🇸 Serbian","🇸🇰 Slovak","🇸🇮 Slovenian","🇸🇴 Somali","🇪🇸 Spanish","🇰🇪 Swahili","🇸🇪 Swedish","🇵🇭 Tagalog","🇮🇳 Tamil","🇮🇳 Telugu","🇹🇭 Thai","🇹🇷 Turkish","🇺🇦 Ukrainian","🇵🇰 Urdu","🇻🇳 Vietnamese"]
   OPEN_AI_LANGUAGES_SHORT = ["🇬🇧 English", "🇫🇷 French", "🇩🇪 German", "🇮🇹 Italian", "🇪🇸 Spanish", "🇨🇳 Chinese", "🇮🇳 Hindi", "🇧🇩 Bengali", "🇵🇹 Portuguese", "🇷🇺 Russian", "🇯🇵 Japanese", "🇰🇷 Korean"]
@@ -9,11 +9,12 @@ class DecksController < ApplicationController
   # No authentication here because decks are public.
 
   def index
-    @decks = Deck.all
+    @decks = Deck.order(created_at: :desc)
   end
 
   def show
     @deck = Deck.find(params[:id])
+    @cards = @deck.cards
   end
 
   def new
@@ -23,7 +24,6 @@ class DecksController < ApplicationController
   def create
     @deck = Deck.new(deck_params)
     @deck.user = current_user
-
     if @deck.save
       # creating a new deck just with id, occasion, target language and redirect to edit
       redirect_to edit_deck_path(@deck)
@@ -42,8 +42,7 @@ class DecksController < ApplicationController
                     2. If the input language is **not in this list**, return exactly: false
                     3. Do not add any explanation, quotes, or extra text. Only return the language or false.
                     Input:"
-    @deck.source_language = @llm_chat.with_instructions(instructions).ask(@deck.occasion)
-
+    @deck.source_language = @llm_chat.with_instructions(instructions).ask(@deck.occasion).content
     if @deck.source_language == "false"
       # here needs to be an error message
     else
@@ -51,11 +50,13 @@ class DecksController < ApplicationController
         open_ai_call
       end
     end
+    @deck.save
   end
 
   def update
-    # save deck
-    @deck.update(deck_params)
+    # set title
+    set_title
+
     # create user deck
     @user_deck = UserDeck.create(user: @deck.user, deck: @deck)
 
@@ -67,10 +68,15 @@ class DecksController < ApplicationController
     redirect_to user_decks_path
   end
 
+  def destroy
+    @deck.destroy
+    redirect_to user_decks_path
+  end
+
   private
 
   def deck_params
-    params.require(:deck).permit(:title, :source_language, :target_language, :system_prompt, :occasion)
+    params.require(:deck).permit(:title, :source_language, :target_language, :system_prompt, :occasion, :user)
   end
 
   def set_deck
@@ -78,7 +84,11 @@ class DecksController < ApplicationController
   end
 
   def open_ai_call(retries = 3)
-    set_deck
+    example = '[
+                { "Windel": "diaper" },
+                { "füttern": "to feed" },
+                { "schlafen": "to sleep" }
+              ]'
     system_prompt = "You are an expert in translating practical vocabulary from #{@deck.source_language} to #{@deck.target_language}.
                       Your task is to generate a list of the most important useful words and phrases needed in the following situation: #{@deck.occasion}.
                       Carefully analyze and interpret the situation.
@@ -98,26 +108,27 @@ class DecksController < ApplicationController
                         Each element is a hash with exactly one key-value pair
                         Key: a word or short phrase in #{@deck.source_language} (front side of flashcard)
                         Value: its translation into #{@deck.target_language} (back side of flashcard)
+                        The value must always be a correct and natural translation of the key into #{@deck.target_language}.
+                        The key and the value must never be in the same language.
+                        Do not copy, repeat, imitate, or slightly modify the key on the value side.
+                        The two languages must always be clearly distinguishable.
                       Example:
-                        [
-                        { 'Windel': 'Diaper' },
-                        { 'füttern': 'to feed' },
-                        { 'schlafen': 'to sleep' }
-                        ]
+                        #{example}
                       Rules:
                         Use **double quotes only**. Never use single quotes.
                         All output must be valid JSON. No comments. No trailing commas.
                         Do not output anything before or after the JSON array.
                         Output only the array, nothing else
                         If both singular and plural exist, include only the singular form unless the plural is more contextually relevant.
-                        Numbers must always be written out in full words in both languages (e.g. 625 -> 'six hundred and twenty-five').
+                        Numbers must always be written out in full words in both languages. For example: if a number contains multiple digits, write the entire number as words only and do not use any digits.
+                        When expressing years, always use a two-part decade–decade structure appropriate for the target language (for example: 2025 → twenty twenty-five). Never express years using a >>thousand<< or >>hundred<< construction in any language.
                         Do not use digits anywhere in the output.
                         No introductory text, no explanations
                         No formatting like headings or lists outside the array
                         Use plain UTF-8 text
-                        Emojis are allowed
+                        Emojis are not allowed
                       Follow these instructions exactly."
-    @deck.system_prompt = "#{system_prompt}"
+    @deck.system_prompt = system_prompt
     @response = @llm_chat.with_instructions(@deck.system_prompt).ask(@deck.occasion)
 
     # converting String to Array
@@ -140,5 +151,24 @@ class DecksController < ApplicationController
         raise "AI returned invalid JSON after multiple retries: #{@response.content}"
       end
     end
+  end
+
+  def set_title
+    llm_chat_title = RubyLLM.chat
+    system_prompt = "You generate short, clean titles.
+                      TASK:
+                      - Summarize the following user input into a title.
+                      - The title must be written in #{@deck.source_language}.
+                      - Length: 2 to 6 words.
+                      OUTPUT RULES (strict):
+                      - Output ONLY the title text, nothing else.
+                      - No explanations, no quotes, no punctuation around the title.
+                      - No emojis.
+                      - No markdown or formatting.
+                      - Use plain UTF-8 text.
+                      Return only the final title."
+    response_title = llm_chat_title.with_instructions(system_prompt).ask(@deck.occasion)
+    @deck.title = response_title.content
+    @deck.save
   end
 end
