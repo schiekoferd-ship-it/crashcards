@@ -37,3 +37,30 @@
   background-color: #e6f9ea; /* very light green */
   transform: translateY(-2px);
 }
+
+.card-body.decks {
+  transition: background-color 200ms ease, transform 150ms ease;
+}
+
+.card-body.decks:hover {
+  background-color: #ffa7f8; /* flieder */
+  transform: translateY(-2px);
+}
+
+.card-body.user-decks {
+  transition: background-color 200ms ease, transform 150ms ease;
+}
+
+.card-body.user-decks:hover {
+  background-color: #e6f9ea; /* very light green */
+  transform: translateY(-2px);
+}
+
+.delete-button {
+  transition: background-color 200ms ease, transform 150ms ease;
+}
+
+.delete-button:hover {
+  background-color: #ff5f6c;
+  transform: translateY(-2px);
+}

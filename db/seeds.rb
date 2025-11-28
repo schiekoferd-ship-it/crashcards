@@ -78,8 +78,8 @@ puts "Created a user"
 puts "Deletes Deck DB"
 Deck.destroy_all
 puts "..."
-deck1 = Deck.create!(user: user, title: "Childcare Basics", source_language: "German", target_language: "English", occasion: "This is the user input text occasion blabla")
-deck2 = Deck.create!(user: user, title: "Lawyer Basics", source_language: "English", target_language: "French", occasion: "This is the user input text 222 occasion blabla")
+deck1 = Deck.create!(user: user, title: "Childcare Basics", source_language: "🇩🇪 German", target_language: "🇬🇧 English", occasion: "This is the user input text occasion blabla")
+deck2 = Deck.create!(user: user, title: "Lawyer Basics", source_language: "🇬🇧 English", target_language: "🇫🇷 French", occasion: "This is the user input text 222 occasion blabla")
 puts "Created 2 decks"
 
 # Creates Cards
@@ -111,7 +111,7 @@ UserCard.create!(user_deck: user_deck1, card: card1, status: false)
 UserCard.create!(user_deck: user_deck1, card: card2, status: true)
 UserCard.create!(user_deck: user_deck1, card: card3, status: false)
 puts "Created 3 cards for deck1"
-UserCard.create!(user_deck: user_deck2, card: card4, status: false)
-UserCard.create!(user_deck: user_deck2, card: card5, status: false)
+UserCard.create!(user_deck: user_deck2, card: card4, status: true)
+UserCard.create!(user_deck: user_deck2, card: card5, status: true)
 UserCard.create!(user_deck: user_deck2, card: card6, status: true)
 puts "Created 3 cards for deck2"

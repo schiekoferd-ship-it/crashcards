@@ -13,8 +13,19 @@ class UserDecksController < ApplicationController
   end
 
   def create
-    # user_deck = UserDeck.new(user_deck_params)
-    # user_deck.save
+    @user_deck = UserDeck.new
+    @user_deck.user = current_user
+    @user_deck.deck = Deck.find(params[:deck_id])
+    # create user cards
+    @user_deck.deck.cards.each do |card|
+      UserCard.create(user_deck: @user_deck, card: card, status: false)
+    end
+
+    if @user_deck.save
+      redirect_to user_deck_path(@user_deck), notice: "Deck added to your collection!"
+    else
+      redirect_back fallback_location: decks_path, alert: "Could not add deck."
+    end
   end
 
   def destroy
