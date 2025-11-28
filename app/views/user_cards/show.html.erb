@@ -3,7 +3,7 @@
   <!-- Header bar -->
   <div class="mb-3">
     <%= link_to user_decks_path, class: "btn btn-light text-dark" do %>
-      ← Back to Overview
+      ← Back to My Decks
     <% end %>
   </div>
 
@@ -28,12 +28,13 @@
                   style: "width: 100%; min-height: 200px;" do %>
 
         <!-- Language at card top -->
-        <div class="practice-language mb-2" style="font-weight: normal;">
+        <div class="badge bg-white text-success border border-success rounded-pill my-2 px-3">
           <%= @side == "front" ? @deck.source_language : @deck.target_language %>
         </div>
 
+
         <!-- card content centered -->
-        <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+        <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1 pb-4">
           <div class="practice-word" style="font-weight: <%= @side == 'back' ? 'bold' : 'normal' %>;">
             <%= @side == "front" ? @card.front_text : @card.back_text %>
           </div>
@@ -73,20 +74,20 @@
         <div class="modal-content">
 
           <div class="modal-header">
-            <h5 class="modal-title">Congratulations!</h5>
+            <h5 class="modal-title">Congratulations! 🎉</h5>
           </div>
 
           <div class="modal-body">
             <p>You mastered all your CrashCards!</p>
-            <p>Do you want to return to your overview or try again?</p>
+            <p>Do you want to return to My Decks or do the CrashCards again?</p>
           </div>
 
           <div class="modal-footer">
-            <%= link_to "Back to overview",
+            <%= link_to "Back to My Decks",
                         root_path,
                         class: "btn btn-secondary" %>
 
-            <%= button_to "Try again",
+            <%= button_to "Do CrashCards again",
                           reset_all_user_deck_user_cards_path(@user_deck),
                           method: :patch,
                           class: "btn btn-success" %>
