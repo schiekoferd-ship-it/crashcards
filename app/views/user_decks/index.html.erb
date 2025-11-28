@@ -1,65 +1,4 @@
 <div class="container-sm px-4 px-lg-5">
-<<<<<<< HEAD
-  <div class="d-flex align-items-center gap-3 px-3 top-bar">
-
-    <%# search for user_decks %>
-    <div class="flex-grow-1 my-2 rounded-5 search-form">
-      <%= simple_form_for :search, url: user_decks_path, method: :get do |f| %>
-        <div class="search-form-control form-group">
-          <input class="form-control string required bg-light px-4" type="text" name="search[query]" id="search_query" placeholder="Search your decks" />
-          <button name="button" type="submit" class="btn btn-light rounded-end-5 px-4 py-2">
-            <i class="fas fa-search"></i> Search
-          </button>
-        </div>
-      <% end %>
-    </div>
-
-    <%# button to create a new deck %>
-    <div class="align-items-center">
-      <a href="<%= new_deck_path %>" class="btn btn-success rounded-5">
-        <p class="font-weight-bold m-0 px-2 fs-3 ">+</p>
-      </a>
-    </div>
-  </div>
-
-    <%# button to browse other decks %>
-  <div class="px-3 mb-4">
-    <%= link_to decks_path, class: "btn btn-light d-flex align-items-center w-100 px-4 py-2 rounded-pill border-0 shadow-sm text-dark" do %>
-          <i class="fa-regular fa-circle-left d-flex align-items-center justify-content-center"></i>
-      <p class="fw-normal mb-0 ms-3">
-        <strong>Browse other decks</strong>
-      </p>
-
-    <% end %>
-  </div>
-
-
-  <%# List of user decks %>
-  <% @user_decks.each do |user_deck| %>
-    <div class="container-fluid">
-      <%# add hover effect for the card below %>
-      <div class="card-product d-flex justify-content-between rounded-5 mb-3" onclick="window.location='<%= user_deck_path(user_deck) %>'" style="cursor: pointer;" role="link">
-        <div class="card-product-infos">
-          <div class="d-flex justify-content-between align-items-center">
-            <h2><%= user_deck.deck.title %></h2>
-            <%= form_with url: user_deck_path(user_deck), method: :delete, local: true, html: { style: 'display:inline' } do %>
-              <%= button_tag type: 'submit', class: 'btn btn-sm px-2 mx-3', style: 'background-color: rgba(120, 120, 120, 0.12); color: #000000ff; border: none; border-radius: 6px;', data: { turbo_confirm: "Are you sure?" }, onclick: 'event.stopPropagation();' do %>
-                <i class="fa-regular fa-trash-can"></i>
-              <% end %>
-            <% end %>
-          </div>
-          <p><%= user_deck.deck.source_language %> -> <%= user_deck.deck.target_language %></p>
-        </div>
-        <div class="bg-light">
-          <div class="d-flex align-items-center justify-content-center px-4 py-5 bg-light ">
-            <p class="fs-3 fw-semibold"><%= user_deck.progress_percent %>%</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  <% end %>
-
-=======
   <div class="d-flex align-items-center gap-3 px-3 top-bar mb-4">
 
     <%# search for user_decks %>
@@ -138,5 +77,4 @@
       You have no decks yet – create one or look through the community decks!
     </p>
   <% end %>
->>>>>>> 6c684ecfe9516c91c6c19858a90f71ac0a5e6bc6
 </div>
